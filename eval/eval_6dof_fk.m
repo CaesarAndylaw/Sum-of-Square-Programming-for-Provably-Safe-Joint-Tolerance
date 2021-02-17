@@ -38,19 +38,19 @@ ylim([0 1.9]);
 %% sampling to verify the joint bound approximated forward kinematics
 % precomputed lmd as the joint bound 
 % safe distance is 1.8 m 
-% dist = 1.8;
+dist = 1.8;
 % lmd = 0.3283; % feasibility = e-3
-% % lmd = 0.0607; % feasibility = e-12
-% % lmd = 0.0328; % feasibility = e-14
+% lmd = 0.0601; % feasibility = e-12
+lmd = 0.0478; % feasibility = e-14
 
 % safe distance is 1.83 m 
-dist = 1.83;
-% lmd = 0.3595; % feasibility = e-3
-% lmd = 0.0844; % feasibility = 5.992e-12
-lmd = 0.0639; % feasibility = 3.479e-14
+% dist = 1.83;
+% % lmd = 0.3595; % feasibility = e-3
+% % lmd = 0.0844; % feasibility = 5.992e-12
+% lmd = 0.0639; % feasibility = 3.479e-14
 
 sample_num = 10000;
-xpos_approx_samples = zeros(10000,1);
+xpos_approx_samples = zeros(sample_num,1);
 % sampling a y vector within [-1,1]
 
 for i = 1:sample_num
@@ -60,11 +60,12 @@ for i = 1:sample_num
 end
 
 figure
-plot(xpos_approx_samples,'o','lineWidth',2);
+plot(xpos_approx_samples,'.');
 hold on 
 % plot the solidline to demonstrate 1.8
-yline = dist * ones(10000,1);
+yline = dist * ones(sample_num,1);
 plot(yline,'-','lineWidth',2);
 hold on 
 % limitation 
 ylim([0 1.9]);
+disp(max(xpos_approx_samples));

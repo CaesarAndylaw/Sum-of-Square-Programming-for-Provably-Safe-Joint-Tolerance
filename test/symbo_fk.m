@@ -21,7 +21,7 @@ c_pre = ForKine_sym_nolmd(theta_ini, robot.DH, robot.base, robot.cap, ys);
 
 % now only focus on the decompose of the original f1 function: forward
 % kinematics
-f1 = c_pre(1)-1.83;
+f1 = c_pre(1)-1.8;
 [c,t] = coeffs(f1);
 deci_coe = vpa(c,3);
 
@@ -113,9 +113,10 @@ Q_cons(1,1) = 1;
 
 
 %% SOS formulation to formulate the nonlinear constraints
-% options = optimoptions('fmincon','Display','iter','Algorithm','interior-point');
+
 clc
 options = optimoptions('fmincon','Display','iter','Algorithm','SQP');
+% options = optimoptions('fmincon','Display','iter','Algorithm','interior-point');
 obj = @(x)-x(1);
 
 A = [];
