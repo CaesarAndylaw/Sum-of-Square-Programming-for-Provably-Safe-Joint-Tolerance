@@ -1,0 +1,31 @@
+%% evaluation of the 6dof forward kinematics problem solution
+% forward kinematics for original configuration
+
+% robot definition 
+ROBOT = 'GP50';
+robot=robotproperty(ROBOT);
+theta_ini = [pi/20   -pi/2    pi/20   pi/20    pi/20   pi/20]';
+
+cpre = ForKine(theta_ini, robot.DH, robot.base, robot.cap);
+
+%% sampling to verify the joint bound 
+% made sure cpre.x = 1.7421 
+
+% precomputed lmd as the joint bound 
+lmd = 0.0567;
+sample_num = 10000;
+xpos_samples = zeros(10000,1);
+% sampling a y vector within [-1,1]
+
+for i = 1:sample_num
+    ys = -1 + 2*rand(6,1);
+    epos = ForKine_jointbound(theta_ini, robot.DH, robot.base, robot.cap,ys,lmd);
+    xpos_samples(i) = epos(1);
+end
+
+
+%% plot the samples below the 1.8 constraints
+figure
+plot(xpos_samples,'o','lineWidth',2);
+hold on 
+plot 
