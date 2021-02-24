@@ -44,33 +44,6 @@ for i = 1:64
     c = [c; -det(Q_sum(1:i,1:i))];
 end
 
-% test case 7 (two link)
-% Q = [x(6) x(7) x(8);
-%      x(7) x(9) 0;
-%      x(8) 0 x(10)];
-% Q2 = [x(6) x(7);
-%       x(7) x(9)];
-% c1 = -Q(1,1);
-% % c2 = -(Q(1,1)*Q(2,2) - Q(2,1)*Q(1,2));
-% c2 = -det(Q2);
-% c3 = -det(Q);
-% % c4 = -[x(1);x(2);x(3);x(4);x(5)];
-% c = [c1;c2;c3];
-
-% test case 7.1 (two link) simplified 
-% lmd = x(1);
-% a = x(2);
-% b = x(3);
-% c = x(4);
-% Q = [0.034*a-b-c-1, sqrt(3)/4*lmd*a, lmd/4*a;
-%     sqrt(3)/4*lmd*a, lmd^2/4*a+b, 0;
-%     lmd/4*a, 0, sqrt(3)/4*lmd^2*a+c];
-% c1 = -Q(1,1);
-% c2 = -det(Q);
-% c3 = -det(Q);
-% c = [c1;c2;c3];
-
-
 %% eq
 ceq = [];
 

@@ -39,7 +39,8 @@ obj = @(x)-x(1);
 A = [];
 b = [];
 
-xref = [0 1 1 1]; % lmd a b c 
+% xref = [0 1 1 1]; % lmd a b c 
+xref = [0 100*rand(1,3)] % lmd a b c 
 
 LB = [0 1 1 1];
 UB = [];

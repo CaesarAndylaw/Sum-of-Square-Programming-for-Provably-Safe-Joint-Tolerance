@@ -31,7 +31,7 @@ function [c,ceq] = nonlcon_hierarchy(x)
 % c = [c1;c2;c3;c4];
 
 % test case 6 (eg6)
-c = 3/4*x(1)^2 - (x(1)^2 + 4*x(2))*(1/4 - x(2) - x(3));
+% c = 3/4*x(1)^2 - (x(1)^2 + 4*x(2))*(1/4 - x(2) - x(3));
 % lmd = x(1);
 % b = x(2);
 % c = x(3);
@@ -60,17 +60,17 @@ c = 3/4*x(1)^2 - (x(1)^2 + 4*x(2))*(1/4 - x(2) - x(3));
 % c = [c1;c2;c3];
 
 % test case 7.1 (two link) simplified 
-% lmd = x(1);
-% a = x(2);
-% b = x(3);
-% c = x(4);
-% Q = [0.034*a-b-c-1, sqrt(3)/4*lmd*a, lmd/4*a;
-%     sqrt(3)/4*lmd*a, lmd^2/4*a+b, 0;
-%     lmd/4*a, 0, sqrt(3)/4*lmd^2*a+c];
-% c1 = -Q(1,1);
-% c2 = -det(Q);
-% c3 = -det(Q);
-% c = [c1;c2;c3];
+lmd = x(1);
+a = x(2);
+b = x(3);
+c = x(4);
+Q = [(0.034-0.01)*a-b-c-1, sqrt(3)/4*lmd*a, lmd/4*a;
+    sqrt(3)/4*lmd*a, lmd^2/4*a+b, 0;
+    lmd/4*a, 0, sqrt(3)/4*lmd^2*a+c];
+c1 = -Q(1,1);
+c2 = -det(Q(1:2,1:2));
+c3 = -det(Q);
+c = [c1;c2;c3];
 
 
 %% eq
