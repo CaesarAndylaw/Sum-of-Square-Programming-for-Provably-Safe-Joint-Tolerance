@@ -23,9 +23,10 @@ vec_norm = vec_norm / norm(vec_norm); % positive direction of norm vector pepend
 
 %% sampling to verify the joint bound approximated forward kinematics
 % precomputed lmd as the joint bound 
-sample_num = 30000;
+sample_num = 10000;
 xpos_approx_samples = zeros(sample_num,1);
-
+violate = 0;
+min_dist = 999;
 
 for i = 1:sample_num
     ys = -1 + 2*rand(2,1); % sampling a y vector within [-1,1]
@@ -38,6 +39,14 @@ for i = 1:sample_num
     vec_epos = epos - anchor_point;
     dist = dot(vec_epos,vec_norm);
     xpos_approx_samples(i) = dist; % y wall 
+    % violation check
+    if dist < 0
+        violate = violate + 1;
+    end
+    % update optimality 
+    if dist < min_dist
+        min_dist = dist;
+    end
 end
 
 figure
@@ -49,6 +58,9 @@ yline = 0 * ones(sample_num,1); % x wall
 plot(yline,'-','lineWidth',2);
 hold on 
 % limitation 
-% ylim([0 xwall + 0.2]); % x wall 
-ylim([0-0.2, 0 + 0.2]); % x wall 
-disp(max(xpos_approx_samples));
+xlabel('sample number');
+ylabel('safe distance / m'); 
+ylim([0-0.05, 0 + 0.15]); % x wall 
+% disp(max(xpos_approx_samples));
+disp( violate);
+disp( min_dist);

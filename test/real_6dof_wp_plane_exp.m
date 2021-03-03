@@ -58,7 +58,6 @@ for i = 1:nlink
 end
 
 % do the batch gradient first 
-tic
 for num = 1:size(t,2) 
     % determine the order sequence 
     weight = eval(deci_coe(num));
@@ -71,7 +70,6 @@ for num = 1:size(t,2)
     [q,row,col] = coe_assign(weight, order_seq, nlink);
     Q(row,col) = q;
 end
-toc
 
 % get the symmetric matrix Q 
 for i = 1:dim
@@ -106,15 +104,14 @@ obj = @(x)-x(1);
 
 A = [];
 b = [];
-seed = seed + 1;
-rng(seed);
+rng(18);
 xref = [0 100000*rand(1,7)]; % lmdb b c d e g h k
 
 % LB = 1*[0, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4];
 
 LB = 0*[0, 1, 1, 1, 1, 1, 1, 1];
 % UB = [];
-% UB = [0.1, inf, inf, inf, inf, inf, inf, inf];
+UB = [0.1, inf, inf, inf, inf, inf, inf, inf];
 
 % [x, fval] = fmincon(obj,xref,[],[],A,b,[],[],@(x)nonlcon2(x));
 [x, fval, exitflag,output] = fmincon(obj,xref,[],[],A,b,LB,UB,@(x)nonlcon_hierarchy_fk(x,Q,Q1,Q2,Q3,Q4,Q5,Q6,Q_cons),options);

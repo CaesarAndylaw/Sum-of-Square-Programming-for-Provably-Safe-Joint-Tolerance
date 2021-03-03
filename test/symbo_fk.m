@@ -15,8 +15,8 @@ c_pre = ForKine_sym_nolmd(theta_ini, robot.DH, robot.base, robot.cap, ys);
 % now only focus on the decompose of the original f1 function: forward
 % kinematics
 % f1 = c_pre(1)-1.8; % for x axis wall 
-f1 = c_pre(2)-0.45; % for y axis wall 
-% f1 = c_pre(3)-(1.3-eta); % for y axis wall 
+% f1 = c_pre(2)-0.45; % for y axis wall 
+f1 = c_pre(3)-(1.35); % for y axis wall 
 [c,t] = coeffs(f1);
 deci_coe = vpa(c,3);
 
@@ -44,7 +44,6 @@ for i = 1:nlink
 end
 
 % do the batch gradient first 
-tic
 for num = 1:size(t,2) 
     % determine the order sequence 
     weight = eval(deci_coe(num));
@@ -57,7 +56,7 @@ for num = 1:size(t,2)
     [q,row,col] = coe_assign(weight, order_seq, nlink);
     Q(row,col) = q;
 end
-toc
+
 
 % get the symmetric matrix Q 
 for i = 1:dim
@@ -85,7 +84,7 @@ Q_cons(1,1) = 1;
 
 %% SOS formulation to formulate the nonlinear constraints
 
-clc
+% clc
 options = optimoptions('fmincon','Display','iter','Algorithm','SQP');
 % options = optimoptions('fmincon','Display','iter','Algorithm','interior-point');
 obj = @(x)-x(1);
@@ -93,13 +92,13 @@ obj = @(x)-x(1);
 A = [];
 b = [];
 seed = seed + 1;
-rng(13);
+rng(1);
 % xref = [0 1 1 1 1 1 1 1]; % lmdb b c d e g h k 
 xref = [0 100000*rand(1,7)]; % lmdb b c d e g h k
 % load('data/6dof_xref.mat');
 
-LB = [0, zeros(1,7)];
-% LB = 0*[0, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4];
+% LB = [0, zeros(1,7)];
+LB = 110*[0, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4];
 
 % LB = 0*[0, 1, 1, 1, 1, 1, 1, 1];
 % UB = [];

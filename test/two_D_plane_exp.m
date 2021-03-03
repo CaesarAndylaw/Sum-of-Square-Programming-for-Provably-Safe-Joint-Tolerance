@@ -26,8 +26,8 @@ yfk = sinsym(theta1, y1) + sinsym(theta2, y2);
 
 % refute set polynomials
 % construct the coefficient and monomoials
-% f1 = xfk - xwall;
-f1 = yfk - ywall;
+f1 = xfk - xwall;
+% f1 = yfk - ywall;
 [c,t] = coeffs(f1);
 deci_coe = vpa(c,3);
 % decompose to Y^T Q Y = f1

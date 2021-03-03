@@ -13,37 +13,49 @@ ys_ori = [theta1; theta2];
 xpos = cos(theta1) + cos(theta2);
 ypos = sin(theta1) + sin(theta2);
 
-bias = 2.8; % 2.7321 < 2.8 < 2.8284
-lmd = 0.1145; % seed = 1, w/o normalization
+% cases 
 
-% precomputed the positive norm vector 
-anchor_point = [bias;0]; % y = 0, x = bias, due to y = -x + bias
-vec_norm 
+ydist = 0.05;
+lmd = 0.0372;
 
 %% sampling to verify the joint bound approximated forward kinematics
 % precomputed lmd as the joint bound 
-sample_num = 30000;
-xpos_approx_samples = zeros(sample_num,1);
+xwall = xpos + xdist;
+ywall = xpos + ydist;
 
+sample_num = 10000;
+xpos_approx_samples = zeros(sample_num,1);
+violate = 0;
+min_dist = 999;
 
 for i = 1:sample_num
     ys = -1 + 2*rand(2,1); % sampling a y vector within [-1,1]
     ys_pert = ys*lmd + ys_ori; % perturbed y vector
     xpos_per = cos(ys_pert(1)) + cos(ys_pert(2));
     ypos_per = sin(ys_pert(1)) + sin(ys_pert(2));
-%     xpos_approx_samples(i) = xpos_per; % x wall 
     xpos_approx_samples(i) = ypos_per; % y wall 
+    % violation check
+    if ypos_per > ywall
+        violate = violate + 1;
+    end
+    % update optimality 
+    dist = ywall - ypos_per;
+    if dist < min_dist
+        min_dist = dist;
+    end
 end
 
 figure
 plot(xpos_approx_samples,'.');
 hold on 
 % plot the solidline to demonstrate 1.8
-% yline = xwall * ones(sample_num,1); % x wall
 yline = ywall * ones(sample_num,1); % x wall
 plot(yline,'-','lineWidth',2);
 hold on 
 % limitation 
-% ylim([0 xwall + 0.2]); % x wall 
-ylim([ywall-0.2, ywall + 0.2]); % x wall 
-disp(max(xpos_approx_samples));
+xlabel('sample number');
+ylabel('y coordinate / m');
+ylim([ywall-0.15, ywall + 0.1]); % y wall 
+% disp(max(xpos_approx_samples));
+disp( violate);
+disp( min_dist);
